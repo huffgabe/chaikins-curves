@@ -40,7 +40,7 @@ void Curve::buildCurve()
 
 	for (int i = 0; i < iterations; i++) {
 		int vertices = generatedCurve.getVertexCount();
-		sf::VertexArray newCurve(sf::LineStrip);
+		sf::VertexArray newCurve(controlPolygon.getPrimitiveType());
 
 		for (int j = 0; j < vertices - 1; j++) {
 			sf::Vector2f displacement = generatedCurve[j + 1].position - generatedCurve[j].position;
