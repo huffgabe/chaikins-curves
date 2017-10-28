@@ -14,11 +14,18 @@ void initializePrimitives(std::vector<Curve> &curves)
 	int x = 300;
 	int y = 50;
 	int dx = 200;
-	int dy = 60;
+	int dy = 40;
 
 	for (int i = 0; i < 6; i++) {
-		controlPolygon[i] = sf::Vertex(sf::Vector2f(x, y), sf::Color::White);
-		dx -= 60;
+		sf::Color color;
+		if (i % 2 == 0) {
+			color = sf::Color::Red;
+		}
+		else {
+			color = sf::Color::Green;
+		}
+		controlPolygon[i] = sf::Vertex(sf::Vector2f(x, y), color);
+		dx -= 70;
 		dy += 10;
 		x += dx;
 		y += dy;

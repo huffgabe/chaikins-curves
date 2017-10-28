@@ -48,7 +48,7 @@ void Curve::buildCurve()
 			sf::Vector2f newPoint2 = generatedCurve[j].position + (0.75f * displacement);
 
 			newCurve.append(sf::Vertex(newPoint1, generatedCurve[j].color));
-			newCurve.append(sf::Vertex(newPoint2, generatedCurve[j].color));
+			newCurve.append(sf::Vertex(newPoint2, generatedCurve[j + 1].color));
 		}
 
 		generatedCurve = newCurve;
