@@ -1,5 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include "Curve.h"
+#include <SFML/Graphics.hpp>
 
 Curve::Curve(sf::VertexArray controlPolygon, int iterations) :
 	controlPolygon(controlPolygon), iterations(iterations)
@@ -25,4 +25,5 @@ void Curve::setIterations(int iterations)
 
 void Curve::buildCurve()
 {
+	generatedCurve = controlPolygon;
 }
