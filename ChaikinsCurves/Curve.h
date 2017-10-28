@@ -13,6 +13,7 @@ public:
 
 	// Sets number of iterations and rebuilds curve.
 	void setIterations(int iterations);
+	int getIterations();
 
 private:
 	// The original control polygon for this curve.

@@ -8,7 +8,7 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
-void initializePrimitives(std::vector<std::unique_ptr<sf::Drawable>> &primitives)
+void initializePrimitives(std::vector<Curve> &curves)
 {
 	sf::VertexArray controlPolygon(sf::LineStrip, 6);
 	int x = 300;
@@ -24,10 +24,10 @@ void initializePrimitives(std::vector<std::unique_ptr<sf::Drawable>> &primitives
 		y += dy;
 	}
 
-	primitives.push_back(std::make_unique<Curve>(controlPolygon, 0));
+	curves.push_back(Curve(controlPolygon, 0));
 }
 
-void updateState(std::vector<std::unique_ptr<sf::Drawable>> &primitives, sf::Window &window)
+void updateState(std::vector<Curve> &curves, sf::Window &window)
 {
 }
 
@@ -38,24 +38,39 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
 	window.setVerticalSyncEnabled(true);
 
-	std::vector<std::unique_ptr<sf::Drawable>> primitives;
-	initializePrimitives(primitives);
+	std::vector<Curve> curves;
+	initializePrimitives(curves);
 
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			switch (event.type) {
+			case sf::Event::Closed:
 				window.close();
+				break;
+
+			case sf::Event::KeyPressed:
+				if (event.key.code == sf::Keyboard::Right) {
+					curves[0].setIterations(curves[0].getIterations() + 1);
+				}
+				else if (event.key.code == sf::Keyboard::Left) {
+					curves[0].setIterations(curves[0].getIterations() - 1);
+				}
+				break;
+
+			default:
+				break;
+			}
 		}
 
-		updateState(primitives, window);
+		updateState(curves, window);
 
 		window.clear();
 
-		for (auto &primitive : primitives) {
-			window.draw(*primitive);
+		for (auto &curve : curves) {
+			window.draw(curve);
 		}
 
 		window.display();

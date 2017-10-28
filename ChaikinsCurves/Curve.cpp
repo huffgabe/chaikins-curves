@@ -19,8 +19,19 @@ void Curve::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 void Curve::setIterations(int iterations)
 {
-	this->iterations = iterations;
+	if (iterations < 0) {
+		this->iterations = 0;
+	}
+	else {
+		this->iterations = iterations;
+	}
+
 	buildCurve();
+}
+
+int Curve::getIterations()
+{
+	return this->iterations;
 }
 
 void Curve::buildCurve()
