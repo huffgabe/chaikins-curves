@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "Curve.h"
 
@@ -27,6 +28,10 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 		for (auto &curve : curves) {
 			curve.setControlPolygon(sf::VertexArray(sf::LineStrip));
 		}
+		return;
+	}
+	else {
+		return;
 	}
 
 	for (auto &curve : curves) {
@@ -36,12 +41,38 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 	counter.setString(std::to_string(iterations));
 }
 
+void updateVertexColor(int &colorIndex, sf::Text &colorText, sf::Keyboard::Key keyCode) {
+	std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
+
+	if (keyCode == sf::Keyboard::Up) {
+		colorIndex = (colorIndex + 1) % 4;
+	}
+	else if (keyCode == sf::Keyboard::Down) {
+		if (colorIndex == 0) {
+			colorIndex = 3;
+		}
+		else {
+			colorIndex = (colorIndex - 1) % 4;
+		}
+	}
+	else {
+		return;
+	}
+
+	colorText.setString(colorTexts[colorIndex]);
+}
+
 int main()
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
 	window.setVerticalSyncEnabled(true);
+
+	std::vector<sf::Color> vertexColors = {
+		sf::Color::White, sf::Color::Red, sf::Color::Green, sf::Color::Blue
+	};
+	int colorIndex = 0;
 
 	sf::Font font;
 	if (!font.loadFromFile("calibri.ttf")) {
@@ -55,6 +86,10 @@ int main()
 	counter.setFillColor(sf::Color::White);
 	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
 
+	sf::Text colorText("White", font);
+	colorText.setFillColor(sf::Color::White);
+	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -65,10 +100,11 @@ int main()
 			}
 			else if (event.type == sf::Event::KeyPressed) {
 				updateCurveIterations(curves, counter, event.key.code);
+				updateVertexColor(colorIndex, colorText, event.key.code);
 			}
 			else if (event.type == sf::Event::MouseButtonPressed) {
 				sf::VertexArray controlPolygon = curves[0].getControlPolygon();
-				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), sf::Color::White));
+				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
 				curves[0].setControlPolygon(controlPolygon);
 			}
 		}
@@ -79,6 +115,7 @@ int main()
 			window.draw(curve);
 		}
 		window.draw(counter);
+		window.draw(colorText);
 
 		window.display();
 	}
