@@ -7,32 +7,8 @@ const int WINDOW_HEIGHT = 600;
 
 void initializePrimitives(std::vector<Curve> &curves)
 {
-	sf::VertexArray controlPolygon(sf::LineStrip, 6);
-	int x = 300;
-	int y = 50;
-	int dx = 200;
-	int dy = 40;
-
-	for (int i = 0; i < 6; i++) {
-		sf::Color color;
-		if (i % 2 == 0) {
-			color = sf::Color::Red;
-		}
-		else {
-			color = sf::Color::Green;
-		}
-		controlPolygon[i] = sf::Vertex(sf::Vector2f(x, y), color);
-		dx -= 70;
-		dy += 10;
-		x += dx;
-		y += dy;
-	}
-
+	sf::VertexArray controlPolygon(sf::LineStrip);
 	curves.push_back(Curve(controlPolygon, 0));
-}
-
-void updateState(std::vector<Curve> &curves, sf::Window &window)
-{
 }
 
 void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Keyboard::Key keyCode)
@@ -57,9 +33,7 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 
 int main()
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close);
 	window.setVerticalSyncEnabled(true);
 
 	sf::Font font;
@@ -85,9 +59,12 @@ int main()
 			else if (event.type == sf::Event::KeyPressed) {
 				updateCurveIterations(curves, counter, event.key.code);
 			}
+			else if (event.type == sf::Event::MouseButtonPressed) {
+				sf::VertexArray controlPolygon = curves[0].getControlPolygon();
+				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), sf::Color::White));
+				curves[0].setControlPolygon(controlPolygon);
+			}
 		}
-
-		updateState(curves, window);
 
 		window.clear();
 

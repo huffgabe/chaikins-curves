@@ -15,6 +15,9 @@ public:
 	void setIterations(int iterations);
 	int getIterations();
 
+	void setControlPolygon(sf::VertexArray controlPolygon);
+	sf::VertexArray getControlPolygon();
+
 private:
 	// The original control polygon for this curve.
 	sf::VertexArray controlPolygon;

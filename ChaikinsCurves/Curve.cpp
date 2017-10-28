@@ -34,6 +34,17 @@ int Curve::getIterations()
 	return this->iterations;
 }
 
+void Curve::setControlPolygon(sf::VertexArray controlPolygon)
+{
+	this->controlPolygon = controlPolygon;
+	buildCurve();
+}
+
+sf::VertexArray Curve::getControlPolygon()
+{
+	return this->controlPolygon;
+}
+
 void Curve::buildCurve()
 {
 	generatedCurve = controlPolygon;
