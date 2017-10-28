@@ -24,7 +24,7 @@ void initializePrimitives(std::vector<std::unique_ptr<sf::Drawable>> &primitives
 		y += dy;
 	}
 
-	primitives.push_back(std::make_unique<Curve>(controlPolygon, 1));
+	primitives.push_back(std::make_unique<Curve>(controlPolygon, 0));
 }
 
 void updateState(std::vector<std::unique_ptr<sf::Drawable>> &primitives, sf::Window &window)
