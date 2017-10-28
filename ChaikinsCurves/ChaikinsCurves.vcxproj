@@ -122,6 +122,9 @@
   <ItemGroup>
     <ClInclude Include="Curve.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="calibri.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

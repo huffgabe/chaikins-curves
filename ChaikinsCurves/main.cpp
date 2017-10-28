@@ -38,6 +38,26 @@ void updateState(std::vector<Curve> &curves, sf::Window &window)
 {
 }
 
+void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Keyboard::Key keyCode)
+{
+	int iterations = curves[0].getIterations();
+
+	if (keyCode == sf::Keyboard::Right) {
+		iterations++;
+	}
+	else if (keyCode == sf::Keyboard::Left) {
+		if (iterations > 0) {
+			iterations--;
+		}
+	}
+
+	for (auto &curve : curves) {
+		curve.setIterations(iterations);
+	}
+
+	counter.setString(std::to_string(iterations));
+}
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -45,30 +65,28 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
 	window.setVerticalSyncEnabled(true);
 
+	sf::Font font;
+	if (!font.loadFromFile("calibri.ttf")) {
+		return -1;
+	}
+
 	std::vector<Curve> curves;
 	initializePrimitives(curves);
+
+	sf::Text counter("0", font);
+	counter.setFillColor(sf::Color::White);
+	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
 
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			switch (event.type) {
-			case sf::Event::Closed:
+			if (event.type == sf::Event::Closed) {
 				window.close();
-				break;
-
-			case sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::Right) {
-					curves[0].setIterations(curves[0].getIterations() + 1);
-				}
-				else if (event.key.code == sf::Keyboard::Left) {
-					curves[0].setIterations(curves[0].getIterations() - 1);
-				}
-				break;
-
-			default:
-				break;
+			}
+			else if (event.type == sf::Event::KeyPressed) {
+				updateCurveIterations(curves, counter, event.key.code);
 			}
 		}
 
@@ -79,6 +97,7 @@ int main()
 		for (auto &curve : curves) {
 			window.draw(curve);
 		}
+		window.draw(counter);
 
 		window.display();
 	}
