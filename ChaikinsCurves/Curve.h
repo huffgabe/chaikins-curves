@@ -13,9 +13,6 @@ public:
 
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-	// Builds the generatedCurve from controlPolygon.
-	void buildCurve();
-
 	// Set number of iterations and rebuild curve.
 	void setIterations(int iterations);
 
@@ -26,4 +23,7 @@ private:
 	sf::VertexArray generatedCurve;
 	// The number of times to run the Chaikin's curve algorithm.
 	int iterations;
+
+	// Builds the generatedCurve from controlPolygon.
+	void buildCurve();
 };
