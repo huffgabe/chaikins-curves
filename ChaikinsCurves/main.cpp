@@ -9,6 +9,7 @@ const int WINDOW_HEIGHT = 600;
 void initializePrimitives(std::vector<Curve> &curves)
 {
 	sf::VertexArray controlPolygon(sf::LineStrip);
+	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
 	curves.push_back(Curve(controlPolygon, 0));
 }
 
@@ -26,7 +27,9 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 	}
 	else if (keyCode == sf::Keyboard::Space) {
 		for (auto &curve : curves) {
-			curve.setControlPolygon(sf::VertexArray(sf::LineStrip));
+			sf::VertexArray controlPolygon(sf::LineStrip);
+			controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
+			curve.setControlPolygon(controlPolygon);
 		}
 		return;
 	}
@@ -107,6 +110,13 @@ int main()
 				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
 				curves[0].setControlPolygon(controlPolygon);
 			}
+		}
+
+		sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
+		sf::VertexArray controlPolygon = curves[0].getControlPolygon();
+		if (controlPolygon.getVertexCount() > 0) {
+			controlPolygon[controlPolygon.getVertexCount() - 1] = nextVertex;
+			curves[0].setControlPolygon(controlPolygon);
 		}
 
 		window.clear();
