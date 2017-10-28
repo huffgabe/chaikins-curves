@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Curve.h"
 
-Curve::Curve()
+Curve::Curve(sf::VertexArray controlPolygon, int iterations) :
+	controlPolygon(controlPolygon), iterations(iterations)
 {
 	buildCurve();
 }
