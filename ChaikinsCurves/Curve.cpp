@@ -16,6 +16,11 @@ void Curve::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	target.draw(generatedCurve, states);
 }
 
+void Curve::setIterations(int iterations)
+{
+	this->iterations = iterations;
+}
+
 void Curve::buildCurve()
 {
 }
