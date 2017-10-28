@@ -23,6 +23,11 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 			iterations--;
 		}
 	}
+	else if (keyCode == sf::Keyboard::Space) {
+		for (auto &curve : curves) {
+			curve.setControlPolygon(sf::VertexArray(sf::LineStrip));
+		}
+	}
 
 	for (auto &curve : curves) {
 		curve.setIterations(iterations);
@@ -33,7 +38,9 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close);
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
 	window.setVerticalSyncEnabled(true);
 
 	sf::Font font;
