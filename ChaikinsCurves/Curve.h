@@ -13,10 +13,11 @@ public:
 
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-	void setIterations(int iterations);
-
 	// Builds the generatedCurve from controlPolygon.
 	void buildCurve();
+
+	// Set number of iterations and rebuild curve.
+	void setIterations(int iterations);
 
 private:
 	// The original control polygon for this curve.
