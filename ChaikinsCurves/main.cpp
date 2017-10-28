@@ -1,7 +1,4 @@
 #include <vector>
-#include <random>
-#include <memory>
-#include <cmath>
 #include <SFML/Graphics.hpp>
 #include "Curve.h"
 
