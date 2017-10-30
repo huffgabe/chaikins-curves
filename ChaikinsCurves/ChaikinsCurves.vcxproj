@@ -118,9 +118,11 @@
   <ItemGroup>
     <ClCompile Include="Curve.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Curve.h" />
+    <ClInclude Include="Program.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="calibri.ttf" />
