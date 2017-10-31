@@ -1,69 +1,8 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "main.h"
 #include "Curve.h"
-
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
-
-void initializePrimitives(std::vector<Curve> &curves)
-{
-	sf::VertexArray controlPolygon(sf::LineStrip);
-	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-	curves.push_back(Curve(controlPolygon, 0));
-}
-
-void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Keyboard::Key keyCode)
-{
-	int iterations = curves[0].getIterations();
-
-	if (keyCode == sf::Keyboard::Right) {
-		iterations++;
-	}
-	else if (keyCode == sf::Keyboard::Left) {
-		if (iterations > 0) {
-			iterations--;
-		}
-	}
-	else if (keyCode == sf::Keyboard::Space) {
-		for (auto &curve : curves) {
-			sf::VertexArray controlPolygon(sf::LineStrip);
-			controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-			curve.setControlPolygon(controlPolygon);
-		}
-		return;
-	}
-	else {
-		return;
-	}
-
-	for (auto &curve : curves) {
-		curve.setIterations(iterations);
-	}
-
-	counter.setString(std::to_string(iterations));
-}
-
-void updateVertexColor(int &colorIndex, sf::Text &colorText, sf::Keyboard::Key keyCode) {
-	std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
-
-	if (keyCode == sf::Keyboard::Up) {
-		colorIndex = (colorIndex + 1) % 4;
-	}
-	else if (keyCode == sf::Keyboard::Down) {
-		if (colorIndex == 0) {
-			colorIndex = 3;
-		}
-		else {
-			colorIndex = (colorIndex - 1) % 4;
-		}
-	}
-	else {
-		return;
-	}
-
-	colorText.setString(colorTexts[colorIndex]);
-}
 
 int main()
 {
@@ -131,4 +70,64 @@ int main()
 	}
 
 	return 0;
+}
+
+void initializePrimitives(std::vector<Curve> &curves)
+{
+	sf::VertexArray controlPolygon(sf::LineStrip);
+	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
+	curves.push_back(Curve(controlPolygon, 0));
+}
+
+void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Keyboard::Key keyCode)
+{
+	int iterations = curves[0].getIterations();
+
+	if (keyCode == sf::Keyboard::Right) {
+		iterations++;
+	}
+	else if (keyCode == sf::Keyboard::Left) {
+		if (iterations > 0) {
+			iterations--;
+		}
+	}
+	else if (keyCode == sf::Keyboard::Space) {
+		for (auto &curve : curves) {
+			sf::VertexArray controlPolygon(sf::LineStrip);
+			controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
+			curve.setControlPolygon(controlPolygon);
+		}
+		return;
+	}
+	else {
+		return;
+	}
+
+	for (auto &curve : curves) {
+		curve.setIterations(iterations);
+	}
+
+	counter.setString(std::to_string(iterations));
+}
+
+void updateVertexColor(int &colorIndex, sf::Text &colorText, sf::Keyboard::Key keyCode)
+{
+	std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
+
+	if (keyCode == sf::Keyboard::Up) {
+		colorIndex = (colorIndex + 1) % 4;
+	}
+	else if (keyCode == sf::Keyboard::Down) {
+		if (colorIndex == 0) {
+			colorIndex = 3;
+		}
+		else {
+			colorIndex = (colorIndex - 1) % 4;
+		}
+	}
+	else {
+		return;
+	}
+
+	colorText.setString(colorTexts[colorIndex]);
 }

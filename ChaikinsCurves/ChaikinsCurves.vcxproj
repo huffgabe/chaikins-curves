@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Curve.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="calibri.ttf" />
