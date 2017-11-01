@@ -22,15 +22,9 @@ int main()
 	}
 
 	Curve curve;
-	initializePrimitives(curve);
-
 	sf::Text counter("0", font);
-	counter.setFillColor(sf::Color::White);
-	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
-
 	sf::Text colorText("White", font);
-	colorText.setFillColor(sf::Color::White);
-	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
+	initializeDrawables(curve, counter, colorText);
 
 	while (window.isOpen())
 	{
@@ -70,11 +64,17 @@ int main()
 	return 0;
 }
 
-void initializePrimitives(Curve &curve)
+void initializeDrawables(Curve &curve, sf::Text &counter, sf::Text &colorText)
 {
 	sf::VertexArray controlPolygon(sf::LineStrip);
 	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
 	curve = Curve(controlPolygon, 0);
+
+	counter.setFillColor(sf::Color::White);
+	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
+
+	colorText.setFillColor(sf::Color::White);
+	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
 }
 
 void updateCurveIterations(Curve &curve, sf::Text &counter, sf::Keyboard::Key keyCode)
