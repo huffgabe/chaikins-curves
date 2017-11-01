@@ -21,8 +21,8 @@ int main()
 		return -1;
 	}
 
-	std::vector<Curve> curves;
-	initializePrimitives(curves);
+	Curve curve;
+	initializePrimitives(curve);
 
 	sf::Text counter("0", font);
 	counter.setFillColor(sf::Color::White);
@@ -41,28 +41,26 @@ int main()
 				window.close();
 			}
 			else if (event.type == sf::Event::KeyPressed) {
-				updateCurveIterations(curves, counter, event.key.code);
+				updateCurveIterations(curve, counter, event.key.code);
 				updateVertexColor(colorIndex, colorText, event.key.code);
 			}
 			else if (event.type == sf::Event::MouseButtonPressed) {
-				sf::VertexArray controlPolygon = curves[0].getControlPolygon();
+				sf::VertexArray controlPolygon = curve.getControlPolygon();
 				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
-				curves[0].setControlPolygon(controlPolygon);
+				curve.setControlPolygon(controlPolygon);
 			}
 		}
 
 		sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
-		sf::VertexArray controlPolygon = curves[0].getControlPolygon();
+		sf::VertexArray controlPolygon = curve.getControlPolygon();
 		if (controlPolygon.getVertexCount() > 0) {
 			controlPolygon[controlPolygon.getVertexCount() - 1] = nextVertex;
-			curves[0].setControlPolygon(controlPolygon);
+			curve.setControlPolygon(controlPolygon);
 		}
 
 		window.clear();
 
-		for (auto &curve : curves) {
-			window.draw(curve);
-		}
+		window.draw(curve);
 		window.draw(counter);
 		window.draw(colorText);
 
@@ -72,16 +70,16 @@ int main()
 	return 0;
 }
 
-void initializePrimitives(std::vector<Curve> &curves)
+void initializePrimitives(Curve &curve)
 {
 	sf::VertexArray controlPolygon(sf::LineStrip);
 	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-	curves.push_back(Curve(controlPolygon, 0));
+	curve = Curve(controlPolygon, 0);
 }
 
-void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Keyboard::Key keyCode)
+void updateCurveIterations(Curve &curve, sf::Text &counter, sf::Keyboard::Key keyCode)
 {
-	int iterations = curves[0].getIterations();
+	int iterations = curve.getIterations();
 
 	if (keyCode == sf::Keyboard::Right) {
 		iterations++;
@@ -92,20 +90,16 @@ void updateCurveIterations(std::vector<Curve> &curves, sf::Text &counter, sf::Ke
 		}
 	}
 	else if (keyCode == sf::Keyboard::Space) {
-		for (auto &curve : curves) {
-			sf::VertexArray controlPolygon(sf::LineStrip);
-			controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-			curve.setControlPolygon(controlPolygon);
-		}
+		sf::VertexArray controlPolygon(sf::LineStrip);
+		controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
+		curve.setControlPolygon(controlPolygon);
 		return;
 	}
 	else {
 		return;
 	}
 
-	for (auto &curve : curves) {
-		curve.setIterations(iterations);
-	}
+	curve.setIterations(iterations);
 
 	counter.setString(std::to_string(iterations));
 }

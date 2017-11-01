@@ -8,6 +8,7 @@
 class Curve : public sf::Drawable, public sf::Transformable
 {
 public:
+	Curve();
 	Curve(sf::VertexArray controlPolygon, int iterations);
 	~Curve();
 
