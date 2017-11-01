@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
-class Curve : public sf::Drawable, public sf::Transformable
+class Curve : public sf::Drawable
 {
 public:
 	Curve();
