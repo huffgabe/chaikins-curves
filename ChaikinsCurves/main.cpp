@@ -32,22 +32,7 @@ int main()
 
 	while (window.isOpen())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
-			else if (event.type == sf::Event::KeyPressed) {
-				updateCurveIterations(drawable.curve, drawable.counter, event.key.code);
-				updateVertexColor(colorIndex, drawable.colorText, event.key.code);
-			}
-			else if (event.type == sf::Event::MouseButtonPressed) {
-				sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
-				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
-				drawable.curve.setControlPolygon(controlPolygon);
-			}
-		}
+		handleEvents(window, drawable, colorIndex, vertexColors);
 
 		sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
 		sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
@@ -103,6 +88,26 @@ sf::Text initializeColorText(sf::Font &font)
 	colorText.setFillColor(sf::Color::White);
 	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
 	return colorText;
+}
+
+void handleEvents(sf::Window &window, ProgramDrawable &drawable, int &colorIndex, std::vector<sf::Color> &vertexColors)
+{
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed) {
+			window.close();
+		}
+		else if (event.type == sf::Event::KeyPressed) {
+			updateCurveIterations(drawable.curve, drawable.counter, event.key.code);
+			updateVertexColor(colorIndex, drawable.colorText, event.key.code);
+		}
+		else if (event.type == sf::Event::MouseButtonPressed) {
+			sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
+			controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
+			drawable.curve.setControlPolygon(controlPolygon);
+		}
+	}
 }
 
 void updateCurveIterations(Curve &curve, sf::Text &counter, sf::Keyboard::Key keyCode)
