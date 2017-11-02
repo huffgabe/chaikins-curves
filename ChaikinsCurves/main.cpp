@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "main.h"
 #include "Curve.h"
+#include "ProgramDrawable.h"
 
 int main()
 {
@@ -17,8 +18,6 @@ int main()
 	};
 	int colorIndex = 0;
 
-	Curve curve = initializeCurve();
-
 	/* font needs to stay alive for the duration of the program, otherwise
 		an exception is thrown when trying to use an sf::Text */
 	sf::Font font;
@@ -28,7 +27,8 @@ int main()
 	catch (std::runtime_error &e) {
 		return -1;
 	}
-	std::vector<sf::Text> texts = initializeTexts(font);
+
+	ProgramDrawable drawable = initializeDrawables(font);
 
 	while (window.isOpen())
 	{
@@ -39,34 +39,38 @@ int main()
 				window.close();
 			}
 			else if (event.type == sf::Event::KeyPressed) {
-				updateCurveIterations(curve, texts[0], event.key.code);
-				updateVertexColor(colorIndex, texts[1], event.key.code);
+				updateCurveIterations(drawable.curve, drawable.counter, event.key.code);
+				updateVertexColor(colorIndex, drawable.colorText, event.key.code);
 			}
 			else if (event.type == sf::Event::MouseButtonPressed) {
-				sf::VertexArray controlPolygon = curve.getControlPolygon();
+				sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
 				controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
-				curve.setControlPolygon(controlPolygon);
+				drawable.curve.setControlPolygon(controlPolygon);
 			}
 		}
 
 		sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
-		sf::VertexArray controlPolygon = curve.getControlPolygon();
+		sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
 		if (controlPolygon.getVertexCount() > 0) {
 			controlPolygon[controlPolygon.getVertexCount() - 1] = nextVertex;
-			curve.setControlPolygon(controlPolygon);
+			drawable.curve.setControlPolygon(controlPolygon);
 		}
 
 		window.clear();
-
-		window.draw(curve);
-		for (int i = 0; i < 2; i++) {
-			window.draw(texts[i]);
-		}
-
+		window.draw(drawable);
 		window.display();
 	}
 
 	return 0;
+}
+
+ProgramDrawable initializeDrawables(sf::Font &font)
+{
+	ProgramDrawable drawable;
+	drawable.curve = initializeCurve();
+	drawable.counter = initializeCounter(font);
+	drawable.colorText = initializeColorText(font);
+	return drawable;
 }
 
 Curve initializeCurve()
@@ -74,14 +78,6 @@ Curve initializeCurve()
 	sf::VertexArray controlPolygon(sf::LineStrip);
 	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
 	return Curve(controlPolygon, 0);
-}
-
-std::vector<sf::Text> initializeTexts(sf::Font &font)
-{
-	std::vector<sf::Text> texts;
-	texts.push_back(initializeCounter(font));
-	texts.push_back(initializeColorText(font));
-	return texts;
 }
 
 sf::Font loadFont()

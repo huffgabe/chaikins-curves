@@ -1,5 +1,5 @@
-#include "Curve.h"
 #include <SFML/Graphics.hpp>
+#include "Curve.h"
 
 Curve::Curve()
 {
