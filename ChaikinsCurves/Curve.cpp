@@ -3,7 +3,6 @@
 
 Curve::Curve()
 {
-
 }
 
 Curve::Curve(sf::VertexArray controlPolygon, int iterations) :

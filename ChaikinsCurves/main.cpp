@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include "main.h"
 #include "Curve.h"
@@ -16,15 +17,18 @@ int main()
 	};
 	int colorIndex = 0;
 
+	Curve curve = initializeCurve();
+
+	/* font needs to stay alive for the duration of the program, otherwise
+		an exception is thrown when trying to use an sf::Text */
 	sf::Font font;
-	if (!font.loadFromFile("calibri.ttf")) {
+	try {
+		font = loadFont();
+	}
+	catch (std::runtime_error &e) {
 		return -1;
 	}
-
-	Curve curve;
-	sf::Text counter("0", font);
-	sf::Text colorText("White", font);
-	initializeDrawables(curve, counter, colorText);
+	std::vector<sf::Text> texts = initializeTexts(font);
 
 	while (window.isOpen())
 	{
@@ -35,8 +39,8 @@ int main()
 				window.close();
 			}
 			else if (event.type == sf::Event::KeyPressed) {
-				updateCurveIterations(curve, counter, event.key.code);
-				updateVertexColor(colorIndex, colorText, event.key.code);
+				updateCurveIterations(curve, texts[0], event.key.code);
+				updateVertexColor(colorIndex, texts[1], event.key.code);
 			}
 			else if (event.type == sf::Event::MouseButtonPressed) {
 				sf::VertexArray controlPolygon = curve.getControlPolygon();
@@ -55,8 +59,9 @@ int main()
 		window.clear();
 
 		window.draw(curve);
-		window.draw(counter);
-		window.draw(colorText);
+		for (int i = 0; i < 2; i++) {
+			window.draw(texts[i]);
+		}
 
 		window.display();
 	}
@@ -64,17 +69,44 @@ int main()
 	return 0;
 }
 
-void initializeDrawables(Curve &curve, sf::Text &counter, sf::Text &colorText)
+Curve initializeCurve()
 {
 	sf::VertexArray controlPolygon(sf::LineStrip);
 	controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-	curve = Curve(controlPolygon, 0);
+	return Curve(controlPolygon, 0);
+}
 
+std::vector<sf::Text> initializeTexts(sf::Font &font)
+{
+	std::vector<sf::Text> texts;
+	texts.push_back(initializeCounter(font));
+	texts.push_back(initializeColorText(font));
+	return texts;
+}
+
+sf::Font loadFont()
+{
+	sf::Font font;
+	if (!font.loadFromFile("calibri.ttf")) {
+		throw std::runtime_error("Failed to load font.");
+	}
+	return font;
+}
+
+sf::Text initializeCounter(sf::Font &font)
+{
+	sf::Text counter("0", font);
 	counter.setFillColor(sf::Color::White);
 	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
+	return counter;
+}
 
+sf::Text initializeColorText(sf::Font &font)
+{
+	sf::Text colorText("White", font);
 	colorText.setFillColor(sf::Color::White);
 	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
+	return colorText;
 }
 
 void updateCurveIterations(Curve &curve, sf::Text &counter, sf::Keyboard::Key keyCode)
