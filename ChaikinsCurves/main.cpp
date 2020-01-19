@@ -18,17 +18,7 @@ int main()
 	};
 	int colorIndex = 0;
 
-	/* font needs to stay alive for the duration of the program, otherwise
-		an exception is thrown when trying to use an sf::Text */
-	sf::Font font;
-	try
-	{
-		font = loadFont();
-	}
-	catch (std::runtime_error & e)
-	{
-		return -1;
-	}
+	sf::Font font = loadFont();
 
 	ProgramDrawable drawable = initializeDrawables(font);
 
@@ -73,7 +63,7 @@ sf::Font loadFont()
 	sf::Font font;
 	if (!font.loadFromFile("calibri.ttf"))
 	{
-		throw std::runtime_error("Failed to load font.");
+		throw std::runtime_error("Failed to load font calibri.ttf.");
 	}
 	return font;
 }
@@ -99,20 +89,22 @@ void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		switch (event.type)
 		{
+		case sf::Event::Closed:
 			window.close();
-		}
-		else if (event.type == sf::Event::KeyPressed)
-		{
+			break;
+
+		case sf::Event::KeyPressed:
 			updateCurveIterations(drawable.curve, drawable.counter, event.key.code);
 			updateVertexColor(colorIndex, drawable.colorText, event.key.code);
-		}
-		else if (event.type == sf::Event::MouseButtonPressed)
-		{
+			break;
+
+		case sf::Event::MouseButtonPressed:
 			sf::VertexArray controlPolygon = drawable.curve.getControlPolygon();
 			controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
 			drawable.curve.setControlPolygon(controlPolygon);
+			break;
 		}
 	}
 }
@@ -121,26 +113,28 @@ void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key ke
 {
 	int iterations = curve.getIterations();
 
-	if (keyCode == sf::Keyboard::Right)
+	switch (keyCode)
 	{
+	case sf::Keyboard::Right:
 		iterations++;
-	}
-	else if (keyCode == sf::Keyboard::Left)
-	{
+		break;
+
+	case sf::Keyboard::Left:
 		if (iterations > 0)
 		{
 			iterations--;
 		}
-	}
-	else if (keyCode == sf::Keyboard::Space)
+		break;
+	
+	case sf::Keyboard::Space:
 	{
 		sf::VertexArray controlPolygon(sf::LineStrip);
 		controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
 		curve.setControlPolygon(controlPolygon);
 		return;
 	}
-	else
-	{
+	
+	default:
 		return;
 	}
 
@@ -153,12 +147,13 @@ void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key k
 {
 	std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
 
-	if (keyCode == sf::Keyboard::Up)
+	switch (keyCode)
 	{
+	case sf::Keyboard::Up:
 		colorIndex = (colorIndex + 1) % 4;
-	}
-	else if (keyCode == sf::Keyboard::Down)
-	{
+		break;
+
+	case sf::Keyboard::Down:
 		if (colorIndex == 0)
 		{
 			colorIndex = 3;
@@ -167,9 +162,9 @@ void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key k
 		{
 			colorIndex = (colorIndex - 1) % 4;
 		}
-	}
-	else
-	{
+		break;
+
+	default:
 		return;
 	}
 
