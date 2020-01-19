@@ -9,7 +9,7 @@ ProgramDrawable::~ProgramDrawable()
 {
 }
 
-void ProgramDrawable::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void ProgramDrawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(curve, states);
 	target.draw(counter, states);

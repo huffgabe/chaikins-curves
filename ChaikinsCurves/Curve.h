@@ -27,7 +27,7 @@ private:
 	// The number of times to run the Chaikin's curve algorithm.
 	int iterations;
 
-	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	// Builds the generatedCurve from controlPolygon.
 	void buildCurve();

@@ -15,17 +15,19 @@ Curve::~Curve()
 {
 }
 
-void Curve::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Curve::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(generatedCurve, states);
 }
 
 void Curve::setIterations(int iterations)
 {
-	if (iterations < 0) {
+	if (iterations < 0)
+	{
 		this->iterations = 0;
 	}
-	else {
+	else
+	{
 		this->iterations = iterations;
 	}
 
@@ -52,11 +54,13 @@ void Curve::buildCurve()
 {
 	generatedCurve = controlPolygon;
 
-	for (int i = 0; i < iterations; i++) {
+	for (int i = 0; i < iterations; i++)
+	{
 		int vertices = generatedCurve.getVertexCount();
 		sf::VertexArray newCurve(controlPolygon.getPrimitiveType());
 
-		for (int j = 0; j < vertices - 1; j++) {
+		for (int j = 0; j < vertices - 1; j++)
+		{
 			sf::Vector2f displacement = generatedCurve[j + 1].position - generatedCurve[j].position;
 			sf::Vector2f newPoint1 = generatedCurve[j].position + (0.25f * displacement);
 			sf::Vector2f newPoint2 = generatedCurve[j].position + (0.75f * displacement);
