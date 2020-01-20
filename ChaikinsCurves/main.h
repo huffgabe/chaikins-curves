@@ -4,8 +4,8 @@
 #include "Curve.h"
 #include "ProgramDrawable.h"
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
+constexpr int windowWidth = 800;
+constexpr int windowHeight = 600;
 const std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
 
 ProgramDrawable initializeDrawables(sf::Font& font);

@@ -10,7 +10,7 @@ int main()
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Chaikin's Curve Generator", sf::Style::Close, settings);
+	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Chaikin's Curve Generator", sf::Style::Close, settings);
 	window.setVerticalSyncEnabled(true);
 
 	std::vector<sf::Color> vertexColors = {
@@ -72,7 +72,7 @@ sf::Text initializeCounter(sf::Font& font)
 {
 	sf::Text counter("0", font);
 	counter.setFillColor(sf::Color::White);
-	counter.setPosition(sf::Vector2f(WINDOW_WIDTH - 75, WINDOW_HEIGHT - 75));
+	counter.setPosition(sf::Vector2f(windowWidth - 75, windowHeight - 75));
 	return counter;
 }
 
@@ -80,7 +80,7 @@ sf::Text initializeColorText(sf::Font& font)
 {
 	sf::Text colorText("White", font);
 	colorText.setFillColor(sf::Color::White);
-	colorText.setPosition(sf::Vector2f(50, WINDOW_HEIGHT - 75));
+	colorText.setPosition(sf::Vector2f(50, windowHeight - 75));
 	return colorText;
 }
 
