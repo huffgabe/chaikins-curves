@@ -145,8 +145,6 @@ void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key ke
 
 void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key keyCode)
 {
-	std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
-
 	switch (keyCode)
 	{
 	case sf::Keyboard::Up:

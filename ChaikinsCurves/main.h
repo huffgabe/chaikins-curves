@@ -6,6 +6,7 @@
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
+const std::vector<std::string> colorTexts = { "White", "Red", "Green", "Blue" };
 
 ProgramDrawable initializeDrawables(sf::Font& font);
 Curve initializeCurve();
