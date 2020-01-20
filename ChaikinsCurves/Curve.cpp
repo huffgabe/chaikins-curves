@@ -6,7 +6,7 @@ Curve::Curve()
 }
 
 Curve::Curve(sf::VertexArray controlPolygon, int iterations) :
-	controlPolygon(controlPolygon), _iterations(iterations)
+	_controlPolygon(controlPolygon), _iterations(iterations)
 {
 }
 
@@ -36,24 +36,24 @@ int Curve::iterations() const
 	return this->_iterations;
 }
 
-void Curve::setControlPolygon(sf::VertexArray controlPolygon)
+void Curve::controlPolygon(const sf::VertexArray& controlPolygon)
 {
-	this->controlPolygon = controlPolygon;
+	this->_controlPolygon = controlPolygon;
 }
 
-sf::VertexArray Curve::getControlPolygon() const
+sf::VertexArray Curve::controlPolygon() const
 {
-	return this->controlPolygon;
+	return this->_controlPolygon;
 }
 
 sf::VertexArray Curve::buildCurve() const
 {
-	sf::VertexArray generatedCurve = controlPolygon;
+	sf::VertexArray generatedCurve = _controlPolygon;
 
 	for (int i = 0; i < _iterations; i++)
 	{
 		int vertices = generatedCurve.getVertexCount();
-		sf::VertexArray newCurve(controlPolygon.getPrimitiveType());
+		sf::VertexArray newCurve(_controlPolygon.getPrimitiveType());
 
 		for (int j = 0; j < vertices - 1; j++)
 		{

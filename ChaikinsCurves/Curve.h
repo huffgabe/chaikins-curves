@@ -16,13 +16,12 @@ public:
 	void iterations(int iterations);
 	int iterations() const;
 
-	// TODO: Rename getters and setters for controlPolygon.
-	void setControlPolygon(sf::VertexArray controlPolygon);
-	sf::VertexArray getControlPolygon() const;
+	void controlPolygon(const sf::VertexArray& controlPolygon);
+	sf::VertexArray controlPolygon() const;
 
 private:
 	// The original control polygon for this curve.
-	sf::VertexArray controlPolygon;
+	sf::VertexArray _controlPolygon;
 	// The number of times to run the Chaikin's curve algorithm.
 	int _iterations;
 
