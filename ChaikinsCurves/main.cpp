@@ -104,34 +104,22 @@ void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex
 
 void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key keyCode)
 {
-	int iterations = curve.iterations();
-
 	switch (keyCode)
 	{
 	case sf::Keyboard::Right:
-		iterations++;
+		curve.incrementIterations();
 		break;
 
 	case sf::Keyboard::Left:
-		if (iterations > 0)
-		{
-			iterations--;
-		}
+		curve.decrementIterations();
 		break;
 
 	case sf::Keyboard::Space:
-	{
 		curve.reset();
-		return;
+		break;
 	}
 
-	default:
-		return;
-	}
-
-	curve.iterations(iterations);
-
-	counter.setString(std::to_string(iterations));
+	counter.setString(std::to_string(curve.iterations()));
 }
 
 void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key keyCode)

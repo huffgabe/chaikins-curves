@@ -18,6 +18,9 @@ public:
 	void controlPolygon(const sf::VertexArray& controlPolygon);
 	sf::VertexArray controlPolygon() const;
 
+	void incrementIterations();
+	void decrementIterations();
+
 	void updateLastVertex(const sf::Vertex& vertex);
 	void appendVertex(const sf::Vertex& vertex);
 	void reset();

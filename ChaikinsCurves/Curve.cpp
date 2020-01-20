@@ -46,6 +46,17 @@ sf::VertexArray Curve::controlPolygon() const
 	return this->_controlPolygon;
 }
 
+void Curve::incrementIterations()
+{
+	_iterations++;
+}
+
+void Curve::decrementIterations()
+{
+	if (_iterations <= 0) return;
+	_iterations--;
+}
+
 void Curve::updateLastVertex(const sf::Vertex& vertex)
 {
 	const int vertexCount = _controlPolygon.getVertexCount();
