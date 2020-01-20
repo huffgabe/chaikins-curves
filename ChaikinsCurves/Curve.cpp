@@ -8,7 +8,6 @@ Curve::Curve()
 Curve::Curve(sf::VertexArray controlPolygon, int iterations) :
 	controlPolygon(controlPolygon), _iterations(iterations)
 {
-	buildCurve();
 }
 
 Curve::~Curve()
@@ -17,7 +16,7 @@ Curve::~Curve()
 
 void Curve::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(generatedCurve, states);
+	target.draw(buildCurve(), states);
 }
 
 void Curve::iterations(int iterations)
@@ -30,11 +29,9 @@ void Curve::iterations(int iterations)
 	{
 		this->_iterations = iterations;
 	}
-
-	buildCurve();
 }
 
-int Curve::iterations()
+int Curve::iterations() const
 {
 	return this->_iterations;
 }
@@ -42,17 +39,16 @@ int Curve::iterations()
 void Curve::setControlPolygon(sf::VertexArray controlPolygon)
 {
 	this->controlPolygon = controlPolygon;
-	buildCurve();
 }
 
-sf::VertexArray Curve::getControlPolygon()
+sf::VertexArray Curve::getControlPolygon() const
 {
 	return this->controlPolygon;
 }
 
-void Curve::buildCurve()
+sf::VertexArray Curve::buildCurve() const
 {
-	generatedCurve = controlPolygon;
+	sf::VertexArray generatedCurve = controlPolygon;
 
 	for (int i = 0; i < _iterations; i++)
 	{
@@ -71,4 +67,6 @@ void Curve::buildCurve()
 
 		generatedCurve = newCurve;
 	}
+
+	return generatedCurve;
 }
