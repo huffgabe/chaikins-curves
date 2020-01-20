@@ -12,12 +12,15 @@ public:
 	Curve(sf::VertexArray controlPolygon, int iterations);
 	~Curve();
 
-	// Sets number of iterations and rebuilds curve.
 	void iterations(int iterations);
 	int iterations() const;
 
 	void controlPolygon(const sf::VertexArray& controlPolygon);
 	sf::VertexArray controlPolygon() const;
+
+	void updateLastVertex(const sf::Vertex& vertex);
+	void appendVertex(const sf::Vertex& vertex);
+	void reset();
 
 private:
 	// The original control polygon for this curve.

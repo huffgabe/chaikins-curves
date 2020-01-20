@@ -26,13 +26,8 @@ int main()
 	{
 		handleEvents(window, drawable, colorIndex, vertexColors);
 
-		sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
-		sf::VertexArray controlPolygon = drawable.curve.controlPolygon();
-		if (controlPolygon.getVertexCount() > 0)
-		{
-			controlPolygon[controlPolygon.getVertexCount() - 1] = nextVertex;
-			drawable.curve.controlPolygon(controlPolygon);
-		}
+		const sf::Vertex nextVertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]);
+		drawable.curve.updateLastVertex(nextVertex);
 
 		window.clear();
 		window.draw(drawable);
@@ -101,9 +96,7 @@ void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex
 			break;
 
 		case sf::Event::MouseButtonPressed:
-			sf::VertexArray controlPolygon = drawable.curve.controlPolygon();
-			controlPolygon.append(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
-			drawable.curve.controlPolygon(controlPolygon);
+			drawable.curve.appendVertex(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
 			break;
 		}
 	}
@@ -125,15 +118,13 @@ void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key ke
 			iterations--;
 		}
 		break;
-	
+
 	case sf::Keyboard::Space:
 	{
-		sf::VertexArray controlPolygon(sf::LineStrip);
-		controlPolygon.append(sf::Vertex(sf::Vector2f(0, 0), sf::Color::White));
-		curve.controlPolygon(controlPolygon);
+		curve.reset();
 		return;
 	}
-	
+
 	default:
 		return;
 	}
