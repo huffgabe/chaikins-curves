@@ -111,7 +111,7 @@ void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex
 
 void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key keyCode)
 {
-	int iterations = curve.getIterations();
+	int iterations = curve.iterations();
 
 	switch (keyCode)
 	{
@@ -138,7 +138,7 @@ void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key ke
 		return;
 	}
 
-	curve.setIterations(iterations);
+	curve.iterations(iterations);
 
 	counter.setString(std::to_string(iterations));
 }
