@@ -16,3 +16,5 @@ sf::Text initializeColorText(sf::Font& font);
 void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex, std::vector<sf::Color>& vertexColors);
 void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key keyCode);
 void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key keyCode);
+void handleKeyPressedEvent(Curve& curve, int& colorIndex, sf::Keyboard::Key keyCode);
+void updateText(ProgramDrawable& drawable, int& colorIndex);

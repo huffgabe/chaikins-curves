@@ -91,18 +91,21 @@ void handleEvents(sf::Window& window, ProgramDrawable& drawable, int& colorIndex
 			break;
 
 		case sf::Event::KeyPressed:
-			updateCurveIterations(drawable.curve, drawable.counter, event.key.code);
-			updateVertexColor(colorIndex, drawable.colorText, event.key.code);
+			handleKeyPressedEvent(drawable.curve, colorIndex, event.key.code);
+			updateText(drawable, colorIndex);
 			break;
 
 		case sf::Event::MouseButtonPressed:
 			drawable.curve.appendVertex(sf::Vertex((sf::Vector2f)sf::Mouse::getPosition(window), vertexColors[colorIndex]));
 			break;
+
+		default:
+			break;
 		}
 	}
 }
 
-void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key keyCode)
+void handleKeyPressedEvent(Curve& curve, int& colorIndex, sf::Keyboard::Key keyCode)
 {
 	switch (keyCode)
 	{
@@ -114,18 +117,6 @@ void updateCurveIterations(Curve& curve, sf::Text& counter, sf::Keyboard::Key ke
 		curve.decrementIterations();
 		break;
 
-	case sf::Keyboard::Space:
-		curve.reset();
-		break;
-	}
-
-	counter.setString(std::to_string(curve.iterations()));
-}
-
-void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key keyCode)
-{
-	switch (keyCode)
-	{
 	case sf::Keyboard::Up:
 		colorIndex = (colorIndex + 1) % 4;
 		break;
@@ -141,9 +132,17 @@ void updateVertexColor(int& colorIndex, sf::Text& colorText, sf::Keyboard::Key k
 		}
 		break;
 
-	default:
-		return;
-	}
+	case sf::Keyboard::Space:
+		curve.reset();
+		break;
 
-	colorText.setString(colorTexts[colorIndex]);
+	default:
+		break;
+	}
+}
+
+void updateText(ProgramDrawable& drawable, int& colorIndex)
+{
+	drawable.counter.setString(std::to_string(drawable.curve.iterations()));
+	drawable.colorText.setString(colorTexts[colorIndex]);
 }
